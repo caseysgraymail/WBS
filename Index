@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoomable Image</title>
+<style>
+  .container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Adjust based on your needs */
+    margin: auto;
+    overflow: hidden;
+  }
+  .container img {
+    width: 100%;
+    height: auto;
+    cursor: zoom-in;
+    transition: transform 0.25s ease;
+  }
+  .container img.zoomed-in {
+    cursor: zoom-out;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <img id="zoomable-image" src="WBS Final.png" alt="Zoomable Image">
+</div>
+
+<script>
+  const image = document.getElementById('zoomable-image');
+
+  image.addEventListener('click', function(event) {
+    if (this.classList.contains('zoomed-in')) {
+      this.style.transform = 'scale(1)';
+      this.classList.remove('zoomed-in');
+    } else {
+      const rect = this.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const scaleX = rect.width / x;
+      const scaleY = rect.height / y;
+      const zoomScale = 2; // Adjust this value to control zoom level
+      this.style.transformOrigin = `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
+      this.style.transform = `scale(${zoomScale})`;
+      this.classList.add('zoomed-in');
+    }
+  });
+</script>
+</body>
+</html>
